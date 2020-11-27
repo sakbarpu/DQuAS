@@ -25,38 +25,26 @@ print("")
 def extract_qa(line_dict):
 	question_text = line_dict['question_text'] + '?'
 
-#	print(line_dict['annotations'])	
 	for la in line_dict['annotations']:
 		long_answer = la['long_answer']
 		start_byte = long_answer['start_byte']
 		end_byte = long_answer['end_byte']
-#		print(long_answer)
 		long_answer_content = ""
 		for l in line_dict['document_tokens']:
 			if l['start_byte'] >= start_byte and l['end_byte'] <= end_byte and l['html_token'] is False:
 				 long_answer_content += l['token'] + " "
-#	print(long_answer_content)
 
 
 	lac_starts = collections.defaultdict(list)
 	lac_ends = collections.defaultdict(list)
 	i = 0
-#	print("long answer candidates")
-#	print(len(line_dict['long_answer_candidates']))	
-#	for l in line_dict['long_answer_candidates']: print(l)
-
 	for lac in line_dict['long_answer_candidates']:
 		start_byte = lac['start_byte']
 		end_byte = lac['end_byte']
 		lac_starts[start_byte].append(i)
 		lac_ends[end_byte].append(i)
 		i += 1
-#	print("starts and ends")
-#	print(lac_starts)
-#	print(lac_ends)
 
-#	print("DOC TOKENS")
-#	for l in line_dict['document_tokens']: print(l)
 	lac_contents = ["" for x in range(len(lac_starts))]
 	curr_spans = set()
 	for l in line_dict['document_tokens']:
@@ -68,14 +56,9 @@ def extract_qa(line_dict):
 			for x in lac_ends[l['end_byte']]:
 				curr_spans.remove(x)
 
-	#	print("spans : ", curr_spans)
 		for span in curr_spans:
 			lac_contents[span] += l['token'] + " "
 		
-#		print("\nCONTENTS")
-#		for contents in lac_contents: print(contents)
-
-	#for i, content in enumerate(lac_contents): print(i, len(content), content)
 	return [question_text, long_answer_content, lac_contents]
 
 def preprocess_data(full_data):
