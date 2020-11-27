@@ -2,6 +2,7 @@ import sys, os
 import json
 import pickle
 import collections
+import random
 
 data_dir = sys.argv[1]
 
