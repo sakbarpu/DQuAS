@@ -162,9 +162,9 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 				# scaler.step() first unscales the gradients of the optimizer's assigned params.
 				# If these gradients do not contain infs or NaNs, opti.step() is then called,
 				# otherwise, opti.step() is skipped.
-				scaler.step(opti)
+				#scaler.step(opti)
 				# Updates the scale for next iteration.
-				scaler.update()
+				#scaler.update()
 				# Adjust the learning rate based on the number of iterations.
 				lr_scheduler.step()
 				# Clear gradients
@@ -191,7 +191,7 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 			best_ep = ep + 1
 
 	# Saving the model
-	path_to_model='models/{}_lr_{}_val_loss_{}_ep_{}.pt'.format(bert_model, lr, round(best_loss, 5), best_ep)
+	path_to_model='/home/ubuntu/mnt/cloudNAS2/SoftKBase/Google_NQ/models/{}_lr_{}_val_loss_{}_ep_{}.pt'.format(bert_model, lr, round(best_loss, 5), best_ep)
 	torch.save(net_copy.state_dict(), path_to_model)
 	print("The model has been saved in {}".format(path_to_model))
 
@@ -201,7 +201,7 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 
 # Reading train and dev data
 data_dir = sys.argv[1]
-train_path = open(os.path.join(data_dir,'train/train_processed_0.csv'))
+train_path = open(os.path.join(data_dir,'train/train_processed.csv'))
 dev_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
 
 delimiter = "<;;;>" 
@@ -209,10 +209,15 @@ df_train = pd.read_csv(train_path, delimiter=delimiter)
 df_val = pd.read_csv(dev_path, delimiter=delimiter)
 
 print(df_train.head())
+print(df_train.columns)
+print(df_train[' label '].value_counts())
+print(len(df_train.index))
+print(df_train.shape)
+print(df_train.dtypes)
 
 # Defining model and parameters
 bert_model = "albert-base-v2"  # 'albert-base-v2', 'albert-large-v2', 'albert-xlarge-v2', 'albert-xxlarge-v2', 'bert-base-uncased', ...
-freeze_bert = False  # if True, freeze the encoder weights and only update the classification layer weights
+freeze_bert = True  # if True, freeze the encoder weights and only update the classification layer weights
 maxlen = 128  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
 bs = 16  # batch size
 iters_to_accumulate = 2  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
@@ -247,7 +252,7 @@ num_training_steps = epochs * len(train_loader)  # The total number of training 
 t_total = (len(train_loader) // iters_to_accumulate) * epochs  # Necessary to take into account Gradient accumulation
 lr_scheduler = get_linear_schedule_with_warmup(optimizer=opti, num_warmup_steps=num_warmup_steps, num_training_steps=t_total)
 
-#train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader, epochs, iters_to_accumulate)
+train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader, epochs, iters_to_accumulate)
 
 
 
