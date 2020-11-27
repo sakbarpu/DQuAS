@@ -72,7 +72,7 @@ def preprocess_data(full_data):
 		c += 1
 	return [a for a in qa_ds if len(a[1]) > 0]
 
-print("Now preprocessing the training datasets...")
+print("\n\nNow preprocessing the training datasets...")
 qa_dataset = []
 num_train_files = 0
 for train_file in sorted(train_data_files):
@@ -89,6 +89,28 @@ for train_file in sorted(train_data_files):
 	print("Number of examples so far: ", len(qa_dataset))
 
 output_file = os.path.join(train_dir, "train_processed.pkl")
+pickle.dump(qa_dataset, open(output_file, 'wb'))
+
+qa_read = pickle.load(open(output_file, "rb"))
+for qa in qa_read[:10]: print(qa)
+
+print("\n\nNow preprocessing the dev datasets...")
+qa_dataset = []
+num_dev_files = 0
+for dev_file in sorted(dev_data_files):
+	dev_file = os.path.join(dev_dir, dev_file)
+	print(num_dev_files, ": ", dev_file)
+
+	with open(dev_file) as f:
+		content = f.readlines()
+		qa = preprocess_data(content)
+		qa_dataset += qa
+	del content
+	f.close()
+	num_dev_files += 1
+	print("Number of examples so far: ", len(qa_dataset))
+
+output_file = os.path.join(dev_dir, "dev_processed.pkl")
 pickle.dump(qa_dataset, open(output_file, 'wb'))
 
 qa_read = pickle.load(open(output_file, "rb"))
