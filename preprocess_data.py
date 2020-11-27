@@ -37,7 +37,7 @@ def extract_qa(line_dict):
 	lac_starts = collections.defaultdict(list)
 	lac_ends = collections.defaultdict(list)
 	i = 0
-	for lac in line_dict['long_answer_candidates']:
+	for lac in random.sample(line_dict['long_answer_candidates'], min(5, len(line_dict['long_answer_candidates']))):
 		if lac['start_byte'] == la_start_byte and lac['end_byte'] == la_end_byte:
 			continue
 		start_byte = lac['start_byte']
