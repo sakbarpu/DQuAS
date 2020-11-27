@@ -27,18 +27,19 @@ def extract_qa(line_dict):
 
 	for la in line_dict['annotations']:
 		long_answer = la['long_answer']
-		start_byte = long_answer['start_byte']
-		end_byte = long_answer['end_byte']
+		la_start_byte = long_answer['start_byte']
+		la_end_byte = long_answer['end_byte']
 		long_answer_content = ""
 		for l in line_dict['document_tokens']:
-			if l['start_byte'] >= start_byte and l['end_byte'] <= end_byte and l['html_token'] is False:
+			if l['start_byte'] >= la_start_byte and l['end_byte'] <= la_end_byte and l['html_token'] is False:
 				 long_answer_content += l['token'] + " "
-
-
+	
 	lac_starts = collections.defaultdict(list)
 	lac_ends = collections.defaultdict(list)
 	i = 0
 	for lac in line_dict['long_answer_candidates']:
+		if lac['start_byte'] == la_start_byte and lac['end_byte'] == la_end_byte:
+			continue
 		start_byte = lac['start_byte']
 		end_byte = lac['end_byte']
 		lac_starts[start_byte].append(i)
@@ -48,6 +49,7 @@ def extract_qa(line_dict):
 	lac_contents = ["" for x in range(len(lac_starts))]
 	curr_spans = set()
 	for l in line_dict['document_tokens']:
+
 		if l['start_byte'] in lac_starts:
 			for x in lac_starts[l['start_byte']]:
 				curr_spans.add(x)
@@ -58,7 +60,7 @@ def extract_qa(line_dict):
 
 		for span in curr_spans:
 			lac_contents[span] += l['token'] + " "
-		
+	
 	return [question_text, long_answer_content, lac_contents]
 
 def preprocess_data(full_data):
@@ -75,45 +77,52 @@ def preprocess_data(full_data):
 print("\n\nNow preprocessing the training datasets...")
 qa_dataset = []
 num_train_files = 0
-for train_file in sorted(train_data_files):
-	train_file = os.path.join(train_dir, train_file)
-	print(num_train_files, ": ", train_file)
+output_file = os.path.join(train_dir, "train_processed.csv")
 
-	with open(train_file) as f:
-		content = f.readlines()
-		qa = preprocess_data(content)
-		qa_dataset += qa
-	del content
-	f.close()
-	num_train_files += 1
-	print("Number of examples so far: ", len(qa_dataset))
+with open(output_file, 'w') as csvfile:
+	for train_file in sorted(train_data_files):
+		train_file = os.path.join(train_dir, train_file)
+		print(num_train_files, ": ", train_file)
 
-output_file = os.path.join(train_dir, "train_processed.pkl")
-pickle.dump(qa_dataset, open(output_file, 'wb'))
+		with open(train_file) as f:
+			content = f.readlines()
+			qa = preprocess_data(content)
+			qa_dataset += qa
+		del content
+		f.close()
+		num_train_files += 1
+		print("Number of examples so far: ", len(qa_dataset))
 
-qa_read = pickle.load(open(output_file, "rb"))
-for qa in qa_read[:10]: print(qa)
+		for qa in qa_dataset:
+			csvfile.write(qa[0] + " <;;;> " + " 1 " + " <;;;> " + qa[1] + "\n")
+			for cand in qa[2]:
+				csvfile.write(qa[0] + " <;;;> " + " 0 " + " <;;;> " + cand + "\n")
+
+del qa_dataset
+csvfile.close()
 
 print("\n\nNow preprocessing the dev datasets...")
 qa_dataset = []
 num_dev_files = 0
-for dev_file in sorted(dev_data_files):
-	dev_file = os.path.join(dev_dir, dev_file)
-	print(num_dev_files, ": ", dev_file)
+output_file = os.path.join(dev_dir, "dev_processed.csv")
 
-	with open(dev_file) as f:
-		content = f.readlines()
-		qa = preprocess_data(content)
-		qa_dataset += qa
-	del content
-	f.close()
-	num_dev_files += 1
-	print("Number of examples so far: ", len(qa_dataset))
+with open(output_file) as csvfile:
+	for dev_file in sorted(dev_data_files):
+		dev_file = os.path.join(dev_dir, dev_file)
+		print(num_dev_files, ": ", dev_file)
 
-output_file = os.path.join(dev_dir, "dev_processed.pkl")
-pickle.dump(qa_dataset, open(output_file, 'wb'))
+		with open(dev_file) as f:
+			content = f.readlines()
+			qa = preprocess_data(content)
+			qa_dataset += qa
+		del content
+		f.close()
+		num_dev_files += 1
+		print("Number of examples so far: ", len(qa_dataset))
 
-qa_read = pickle.load(open(output_file, "rb"))
-for qa in qa_read[:10]: print(qa)
+		for qa in qa_dataset:
+			csvfile.write(qa[0] + " <;;;> " + " 1 " + " <;;;> " + qa[1] + "\n")
+			for cand in qa[2]:
+				csvfile.write(qa[0] + " <;;;> " + " 0 " + " <;;;> " + cand + "\n")
 
 
