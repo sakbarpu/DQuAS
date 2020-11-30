@@ -203,7 +203,7 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 # Reading train and dev data
 data_dir = sys.argv[1]
 train_path = open(os.path.join(data_dir,'train/train_processed_0.csv'))
-dev_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
+dev_path = open(os.path.join(data_dir,'dev/dev_processed.csv'))
 
 delimiter = " <;;;> " 
 df_train = pd.read_csv(train_path, delimiter=delimiter)
@@ -221,8 +221,8 @@ bert_model = "bert-base-uncased"  # 'albert-base-v2', 'albert-large-v2', 'albert
 freeze_bert = False  # if True, freeze the encoder weights and only update the classification layer weights
 maxlen = 192  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
 bs = 16  # batch size
-iters_to_accumulate = 2  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
-lr = 2e-5  # learning rate
+iters_to_accumulate = 1  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
+lr = 5e-5  # learning rate
 epochs = 4  # number of training epochs
 
 #  Set all seeds to make reproducible results

@@ -18,7 +18,7 @@ print("")
 
 dev_dir = os.path.join(data_dir,"dev")
 dev_data_files = os.listdir(dev_dir)
-print("There are ", len(train_data_files), "validation JSON files")
+print("There are ", len(dev_data_files), "validation JSON files")
 print("Listed below")
 for f in dev_data_files: print(f)
 print("")
@@ -75,39 +75,40 @@ def preprocess_data(full_data):
 		c += 1
 	return [a for a in qa_ds if len(a[1]) > 0]
 
-print("\n\nNow preprocessing the training datasets...")
-qa_dataset = []
-num_train_files = 0
-output_file = os.path.join(train_dir, "train_processed.csv")
+#print("\n\nNow preprocessing the training datasets...")
+#qa_dataset = []
+#num_train_files = 0
+#output_file = os.path.join(train_dir, "train_processed.csv")
+#
+#with open(output_file, 'w') as csvfile:
+#	for train_file in sorted(train_data_files):
+#		train_file = os.path.join(train_dir, train_file)
+#		print(num_train_files, ": ", train_file)
+#
+#		with open(train_file) as f:
+#			content = f.readlines()
+#			qa = preprocess_data(content)
+#			qa_dataset += qa
+#		del content
+#		f.close()
+#		num_train_files += 1
+#		print("Number of examples so far: ", len(qa_dataset))
+#
+#		for qa in qa_dataset:
+#			csvfile.write(qa[0] + " <;;;> " + " 1 " + " <;;;> " + qa[1] + "\n")
+#			for cand in qa[2]:
+#				csvfile.write(qa[0] + " <;;;> " + " 0 " + " <;;;> " + cand + "\n")
 
-with open(output_file, 'w') as csvfile:
-	for train_file in sorted(train_data_files):
-		train_file = os.path.join(train_dir, train_file)
-		print(num_train_files, ": ", train_file)
-
-		with open(train_file) as f:
-			content = f.readlines()
-			qa = preprocess_data(content)
-			qa_dataset += qa
-		del content
-		f.close()
-		num_train_files += 1
-		print("Number of examples so far: ", len(qa_dataset))
-
-		for qa in qa_dataset:
-			csvfile.write(qa[0] + " <;;;> " + " 1 " + " <;;;> " + qa[1] + "\n")
-			for cand in qa[2]:
-				csvfile.write(qa[0] + " <;;;> " + " 0 " + " <;;;> " + cand + "\n")
-
-del qa_dataset
-csvfile.close()
+#del qa_dataset
+#csvfile.close()
 
 print("\n\nNow preprocessing the dev datasets...")
 qa_dataset = []
 num_dev_files = 0
 output_file = os.path.join(dev_dir, "dev_processed.csv")
 
-with open(output_file) as csvfile:
+with open(output_file, "w") as csvfile:
+	csvfile.write("question" + " <;;;> " + "label" + " <;;;> " + "candidate")
 	for dev_file in sorted(dev_data_files):
 		dev_file = os.path.join(dev_dir, dev_file)
 		print(num_dev_files, ": ", dev_file)
