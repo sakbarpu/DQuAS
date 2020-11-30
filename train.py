@@ -29,14 +29,19 @@ class CustomDataset(Dataset):
 
 	def __getitem__(self, index):
 		# Selecting sentence1 and sentence2 at the specified index in the data frame
-		sent1 = str(self.data.loc[index, 'sentence1'])
-		sent2 = str(self.data.loc[index, 'sentence2'])
+		sent1 = str(self.data.loc[index, 'question'])
+		sent2 = str(self.data.loc[index, 'candidate'])
 
 		# Tokenize the pair of sentences to get token ids, attention masks and token type ids
-		encoded_pair = self.tokenizer(sent1, sent2, padding='max_length',  # Pad to max_length
-								truncation=True,	# Truncate to max_length
+		encoded_pair = self.tokenizer.encode_plus(sent1, sent2, pad_to_max_length=True,  # Pad to max_length
+								#truncation=True,	# Truncate to max_length
 								max_length=self.maxlen,  
 								return_tensors='pt')	# Return torch.Tensor objects
+
+		print("ids", encoded_pair['input_ids'])
+		print("mask", encoded_pair['attention_mask'])
+		print("type", encoded_pair['token_type_ids'])
+		exit()
 
 		token_ids = encoded_pair['input_ids'].squeeze(0)  # tensor of token ids
 		attn_masks = encoded_pair['attention_mask'].squeeze(0)	# binary tensor with "0" for padded values and "1" for the other values
@@ -201,16 +206,16 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 
 # Reading train and dev data
 data_dir = sys.argv[1]
-train_path = open(os.path.join(data_dir,'train/train_processed.csv'))
+train_path = open(os.path.join(data_dir,'train/train_processed_0.csv'))
 dev_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
 
-delimiter = "<;;;>" 
+delimiter = " <;;;> " 
 df_train = pd.read_csv(train_path, delimiter=delimiter)
 df_val = pd.read_csv(dev_path, delimiter=delimiter)
 
 print(df_train.head())
 print(df_train.columns)
-print(df_train[' label '].value_counts())
+print(df_train['label'].value_counts())
 print(len(df_train.index))
 print(df_train.shape)
 print(df_train.dtypes)
@@ -218,7 +223,7 @@ print(df_train.dtypes)
 # Defining model and parameters
 bert_model = "albert-base-v2"  # 'albert-base-v2', 'albert-large-v2', 'albert-xlarge-v2', 'albert-xxlarge-v2', 'bert-base-uncased', ...
 freeze_bert = True  # if True, freeze the encoder weights and only update the classification layer weights
-maxlen = 128  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
+maxlen = 192  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
 bs = 16  # batch size
 iters_to_accumulate = 2  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
 lr = 2e-5  # learning rate
@@ -233,8 +238,9 @@ train_set = CustomDataset(df_train, maxlen, bert_model)
 print("Reading validation data...")
 val_set = CustomDataset(df_val, maxlen, bert_model)
 
+
 # Creating instances of training and validation dataloaders
-train_loader = DataLoader(train_set, batch_size=bs, num_workers=5)
+train_loader = DataLoader(train_set, batch_size=bs, num_workers=1)
 val_loader = DataLoader(val_set, batch_size=bs, num_workers=5)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 net = SentencePairClassifier(bert_model, freeze_bert=freeze_bert)
