@@ -38,11 +38,6 @@ class CustomDataset(Dataset):
 								max_length=self.maxlen,  
 								return_tensors='pt')	# Return torch.Tensor objects
 
-		print("ids", encoded_pair['input_ids'])
-		print("mask", encoded_pair['attention_mask'])
-		print("type", encoded_pair['token_type_ids'])
-		exit()
-
 		token_ids = encoded_pair['input_ids'].squeeze(0)  # tensor of token ids
 		attn_masks = encoded_pair['attention_mask'].squeeze(0)	# binary tensor with "0" for padded values and "1" for the other values
 		token_type_ids = encoded_pair['token_type_ids'].squeeze(0)	# binary tensor with "0" for the 1st sentence tokens & "1" for the 2nd sentence tokens
@@ -74,7 +69,7 @@ class SentencePairClassifier(nn.Module):
 			hidden_size = 4096
 		elif bert_model == "bert-base-uncased": # 110M parameters
 			hidden_size = 768
-
+		
 		# Freeze bert layers and only train the classification layer weights
 		if freeze_bert:
 			for p in self.bert_layer.parameters():
@@ -94,7 +89,8 @@ class SentencePairClassifier(nn.Module):
 		'''
 
 		# Feeding the inputs to the BERT-based model to obtain contextualized representations
-		cont_reps, pooler_output = self.bert_layer(input_ids, attn_masks, token_type_ids)
+		cont_reps, pooler_output = self.bert_layer(input_ids, attn_masks, token_type_ids) #TODO 
+		#pooler_output = self.bert_layer(input_ids, attn_masks, token_type_ids)  
 
 		# Feeding to the classifier layer the last layer hidden-state of the [CLS] token further processed by a
 		# Linear Layer and a Tanh activation. The Linear layer weights were trained from the sentence order prediction (ALBERT) or next sentence prediction (BERT)
@@ -147,7 +143,7 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 				seq.to(device), attn_masks.to(device), token_type_ids.to(device), labels.to(device)
 
 			# Enables autocasting for the forward pass (model + loss)
-			#with autocast():
+			#with autocast(): #TODO
 
 				# Obtaining the logits from the model
 
@@ -162,7 +158,7 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 			#scaler.scale(loss).backward()
 			loss.backward() #originially the line above is there, not this line
 
-			if (it + 1) % iters_to_accumulate == 0:
+			if (it + 1) % iters_to_accumulate == 0: #TODO
 				# Optimization step
 				# scaler.step() first unscales the gradients of the optimizer's assigned params.
 				# If these gradients do not contain infs or NaNs, opti.step() is then called,
@@ -220,9 +216,9 @@ print(len(df_train.index))
 print(df_train.shape)
 print(df_train.dtypes)
 
-# Defining model and parameters
-bert_model = "albert-base-v2"  # 'albert-base-v2', 'albert-large-v2', 'albert-xlarge-v2', 'albert-xxlarge-v2', 'bert-base-uncased', ...
-freeze_bert = True  # if True, freeze the encoder weights and only update the classification layer weights
+# Defining model and parameters #TODO
+bert_model = "bert-base-uncased"  # 'albert-base-v2', 'albert-large-v2', 'albert-xlarge-v2', 'albert-xxlarge-v2', 'bert-base-uncased', ...
+freeze_bert = False  # if True, freeze the encoder weights and only update the classification layer weights
 maxlen = 192  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
 bs = 16  # batch size
 iters_to_accumulate = 2  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
@@ -237,7 +233,6 @@ print("Reading training data...")
 train_set = CustomDataset(df_train, maxlen, bert_model)
 print("Reading validation data...")
 val_set = CustomDataset(df_val, maxlen, bert_model)
-
 
 # Creating instances of training and validation dataloaders
 train_loader = DataLoader(train_set, batch_size=bs, num_workers=1)
@@ -259,6 +254,3 @@ t_total = (len(train_loader) // iters_to_accumulate) * epochs  # Necessary to ta
 lr_scheduler = get_linear_schedule_with_warmup(optimizer=opti, num_warmup_steps=num_warmup_steps, num_training_steps=t_total)
 
 train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader, epochs, iters_to_accumulate)
-
-
-

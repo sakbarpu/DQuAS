@@ -1,0 +1,4 @@
+print(min(lens_ques), max(lens_ques), np.mean(lens_ques), np.std(lens_ques))
+20 101 48.020221130269405 10.55819701880059
+print(min(lens_cands), max(lens_cands), np.mean(lens_cands), np.std(lens_cands))
+4 125490 160.08603213228955 735.3862709020037
