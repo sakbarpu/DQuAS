@@ -149,7 +149,6 @@ print("\n\nNow preprocessing the training datasets...")
 qa_dataset = []
 num_train_files = 0
 output_file = os.path.join(train_dir, "train_processed.csv")
-
 with open(output_file, 'w') as csvfile:
 	csvfile.write("question" + " <;;;> " + "label" + " <;;;> " + "candidate\n")
 	for train_file in sorted(train_data_files):
@@ -177,7 +176,6 @@ print("\n\nNow preprocessing the dev datasets...")
 qa_dataset = []
 num_dev_files = 0
 output_file = os.path.join(dev_dir, "dev_processed.csv")
-
 with open(output_file, "w") as csvfile:
 	csvfile.write("question" + " <;;;> " + "label" + " <;;;> " + "candidate\n")
 	for dev_file in sorted(dev_data_files):
