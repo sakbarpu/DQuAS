@@ -95,7 +95,6 @@ When evaluation script nq_eval.py is run against the predictions produced by the
 prediction.py and original gold dev files, it produces the following metric values for long
 answer prediction:
 
-<center>
 | Metric | Value|
 ---------|----------------------------------------------------
 "long-best-threshold-f1" | 0.9119335048486048               
@@ -108,7 +107,6 @@ answer prediction:
 "long-precision-at-precision>=0.75" | 0.8381229538013824   
 "long-recall-at-precision>=0.9" | 0                        
 "long-precision-at-precision>=0.9" | 0                     
-</center>
 
 ## Replicate these results
 
@@ -189,6 +187,12 @@ have their lengths closest to the actual positive long answer.
     Based on that, we can first identify what kind of question the user is asking and then build a separate
     model for each type of intent. Also, if the intent is not decidable, we can use straightforward modeling
     approach.
+    
+  * Efficiency needs to be improved. For this task where only upto several hundred candidate passages are there
+    in a Wikipedia article, it's tolerable to have binary classification with the input pairs (question, candidate)
+    passing through the whole neural network to get matching score. In reality, it will be more efficient to change
+    the architecture in a way that at the inference time all you have to do is compare create query embedding and 
+    compare it with the document embeddings in the corpus. These doc embeddings would serve as "indexes" for docs.
 
 ## Critical analysis of the Google NQ task
 
