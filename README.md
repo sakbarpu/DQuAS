@@ -13,25 +13,26 @@
 ### Downloading data
   Simply use the download_dataset.py script to download Here is how to use the script:
     
-    ```python download_dataset.py <data_dir>```
+    python download_dataset.py <data_dir>
   
-  where ```<data_dir>``` is the place where you want to hold the data. Make sure there is
+  where `<data_dir>` is the place where you want to hold the data. Make sure there is
   enough space on disk because dataset can be many GBs.
 
 ### Preprocessing data
   With a single python command you can preprocess the data (both train and dev)
   
-    ```python preprocess_data.py <data_dir>```
+    python preprocess_data.py <data_dir>
     
-  where ```<data_dir>``` is the place where you want to hold the data. The result will be 
+  where `<data_dir>` is the place where you want to hold the data. The result will be 
   creation of two csv files trained_processed.csv and dev_processed.csv.
   
+  ```
   data_dir
         |_ train
                 |_ train_processed.csv
         |_ dev
                 |_ dev_processed.csv
-
+  ```
 
 ## F1 score / Precision / Recall when running the evaluation script nq\_eval.py for the task
 
