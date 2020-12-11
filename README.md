@@ -26,13 +26,14 @@
   where `<data_dir>` is the place where you want to hold the data. The result will be 
   creation of two csv files train_processed.csv and dev_processed.csv.
   
-  `
+  ```
   data_dir
         |_ train
                 |_ train_processed.csv
         |_ dev
                 |_ dev_processed.csv
-  `
+  ```
+  
 ### Train the model
  Again with a single command you can train the model.
  
