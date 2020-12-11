@@ -9,7 +9,7 @@
   * **Torch 1.7.0**
   * **Huggingface Transformers 2.4.0**
   * wget and gzip for downloading and unzipping train and dev files
-  * **Hardware: Intel Core Processor with NVIDIA GTX 1080 Ti **
+  * **Hardware: Intel Core Processor with NVIDIA GTX 1080 Ti**
   
 ### Downloading data
   Simply use the download_dataset.py script to download Here is how to use the script:
