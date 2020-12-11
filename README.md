@@ -117,14 +117,14 @@ answer prediction:
  
  The following are the training criteria (hyperparamters etc.) used:
  
-    ```
+    
     freeze_bert = False     # if True, freeze the encoder weights and only update the classification layer weights
-    maxlen = 512  # max length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
+    maxlen = 512  # max length of the tokenized input sentence pair : if > "maxlen", the input is truncated, else if smaller, the input is padded
     bs = 4  # batch size
     lr = 1e-6  # learning rate
     criterion = nn.BCEWithLogitsLoss() # this is binary cross entropy with logits loss
     opti = AdamW(net.parameters(), lr=lr, weight_decay=1e-2)   
-    ```
+    
 
 ## The Neural Network Architecture 
 
@@ -133,13 +133,18 @@ task. In the code, there is capability of playing with multiple different pretra
 In current state the model used is the [`bert-based-uncased`](https://huggingface.co/bert-base-uncased)
 model.
 
-The model has 110M parameters and is 
+The BERT model has 110M parameters and is pretrained on a large text corpus of Wikipedia and news 
+articles on two different tasks (1) MLM (masked language model) and (2) Next sentence prediction.
 
 For fine-tuning on our binary classification task, we provide (question, candidate) pairs as 
-input sequence and use the `[CLS]` Layer used for classification. The embedding for this layer
-is sent as input to a Linear layer with just one sigmoid output. The sigmoid output tells us
-whether the prediction is positive (1) or negative (0). For the training examples, the model
-is trained using (question, candidate) pairs.
+input sequence and use the `[CLS]` embedding for classification. The embedding for this token
+is provided as input to a Linear layer with just one sigmoid output. The sigmoid output tells us
+probability that there is a match between question and candiate. We can threshold the probability 
+estimate to determine whether the prediction is positive (1) or negative (0). For the training examples, 
+the model is trained using (question, candidate) pairs.
+
+The binary classifier is trained using binary cross entropy loss or `BCEWithLogitsLoss` in PyTorch with
+`AdamW` optimizer.
 
 ### Why it works?
 
