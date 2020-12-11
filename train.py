@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import sys, os
-import matplotlib.pyplot as plt
 import copy
 import torch.optim as optim
 import random
@@ -13,7 +12,7 @@ from torch.utils.data import DataLoader, Dataset
 #from torch.cuda.amp import autocast, GradScaler
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModel, DistilBertModel, AdamW, get_linear_schedule_with_warmup
-from sklearn.metrics import f1_score
+#from sklearn.metrics import f1_score
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -216,63 +215,63 @@ def train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader,
 	del loss
 	torch.cuda.empty_cache()
 
+if __name__ == "__main__":
+	# Reading train and dev data
+	data_dir = sys.argv[1]
+	train_path = open(os.path.join(data_dir,'train/train_processed.csv'))
+	dev_path = open(os.path.join(data_dir,'dev/dev_processed.csv'))
 
-# Reading train and dev data
-data_dir = sys.argv[1]
-train_path = open(os.path.join(data_dir,'train/train_processed.csv'))
-dev_path = open(os.path.join(data_dir,'dev/dev_processed.csv'))
+	#train_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
+	#dev_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
 
-#train_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
-#dev_path = open(os.path.join(data_dir,'dev/dev_processed_0.csv'))
+	delimiter = " <;;;> "
+	df_val = pd.read_csv(dev_path, delimiter=delimiter)
+	chunksize = 6708167
+	#chunksize = 100
+	for df_train in pd.read_csv(train_path, delimiter=delimiter, chunksize=chunksize):
+		# Defining model and parameters #TODO
+		bert_model = 'bert-base-uncased' 
 
-delimiter = " <;;;> "
-df_val = pd.read_csv(dev_path, delimiter=delimiter)
-chunksize = 6708167
-#chunksize = 100
-for df_train in pd.read_csv(train_path, delimiter=delimiter, chunksize=chunksize):
-	# Defining model and parameters #TODO
-	bert_model = 'bert-base-uncased' 
+		#bert_model = 'albert-base-v2'
+		#bert_model = 'albert-large-v2' 
+		#bert_model = 'albert-large-v2'
+		#bert_model = 'albert-xlarge-v2'
+		#bert_model = 'albert-xxlarge-v2'
 
-	#bert_model = 'albert-base-v2'
-	#bert_model = 'albert-large-v2' 
-	#bert_model = 'albert-large-v2'
-	#bert_model = 'albert-xlarge-v2'
-	#bert_model = 'albert-xxlarge-v2'
+		#bert_model = 'distilbert-base-uncased' 
+		#bert_model = 'distilbert-base-uncased-distilled-squad'
 
-	#bert_model = 'distilbert-base-uncased' 
-	#bert_model = 'distilbert-base-uncased-distilled-squad'
+		freeze_bert = False	# if True, freeze the encoder weights and only update the classification layer weights
+		maxlen = 512  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
+		bs = 4  # batch size
+		iters_to_accumulate = 1  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
+		lr = 1e-6  # learning rate
+		epochs = 5	# number of training epochs
 
-	freeze_bert = False	# if True, freeze the encoder weights and only update the classification layer weights
-	maxlen = 512  # maximum length of the tokenized input sentence pair : if greater than "maxlen", the input is truncated and else if smaller, the input is padded
-	bs = 4  # batch size
-	iters_to_accumulate = 1  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
-	lr = 1e-6  # learning rate
-	epochs = 5	# number of training epochs
+		#  Set all seeds to make reproducible results
+		set_seed(1)
 
-	#  Set all seeds to make reproducible results
-	set_seed(1)
+		# Creating instances of training and validation set
+		print("Reading training data...")
+		train_set = CustomDataset(df_train, maxlen, bert_model)
+		print("Reading validation data...")
+		val_set = CustomDataset(df_val, maxlen, bert_model)
 
-	# Creating instances of training and validation set
-	print("Reading training data...")
-	train_set = CustomDataset(df_train, maxlen, bert_model)
-	print("Reading validation data...")
-	val_set = CustomDataset(df_val, maxlen, bert_model)
+		# Creating instances of training and validation dataloaders
+		train_loader = DataLoader(train_set, batch_size=bs, num_workers=1)
+		val_loader = DataLoader(val_set, batch_size=bs, num_workers=1)
+		device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+		net = SentencePairClassifier(bert_model, freeze_bert=freeze_bert)
 
-	# Creating instances of training and validation dataloaders
-	train_loader = DataLoader(train_set, batch_size=bs, num_workers=1)
-	val_loader = DataLoader(val_set, batch_size=bs, num_workers=1)
-	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-	net = SentencePairClassifier(bert_model, freeze_bert=freeze_bert)
+		net.to(device)
 
-	net.to(device)
+		criterion = nn.BCEWithLogitsLoss()
+		opti = AdamW(net.parameters(), lr=lr, weight_decay=1e-2)
+		num_warmup_steps = 0 # The number of steps for the warmup phase.
+		num_training_steps = epochs * len(train_loader)  # The total number of training steps
+		t_total = (len(train_loader) // iters_to_accumulate) * epochs  # Necessary to take into account Gradient accumulation
+		lr_scheduler = get_linear_schedule_with_warmup(optimizer=opti, num_warmup_steps=num_warmup_steps, num_training_steps=t_total)
 
-	criterion = nn.BCEWithLogitsLoss()
-	opti = AdamW(net.parameters(), lr=lr, weight_decay=1e-2)
-	num_warmup_steps = 0 # The number of steps for the warmup phase.
-	num_training_steps = epochs * len(train_loader)  # The total number of training steps
-	t_total = (len(train_loader) // iters_to_accumulate) * epochs  # Necessary to take into account Gradient accumulation
-	lr_scheduler = get_linear_schedule_with_warmup(optimizer=opti, num_warmup_steps=num_warmup_steps, num_training_steps=t_total)
-
-	train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader, epochs, iters_to_accumulate)
+		train_bert(net, criterion, opti, lr, lr_scheduler, train_loader, val_loader, epochs, iters_to_accumulate)
 
 
