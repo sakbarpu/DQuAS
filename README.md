@@ -6,9 +6,10 @@
   * Python 3.7
   * Pandas 0.24.0
   * Sklearn
-  * Torch 1.7.0
-  * Huggingface Transformers 2.4.0
+  * **Torch 1.7.0**
+  * **Huggingface Transformers 2.4.0**
   * wget and gzip for downloading and unzipping train and dev files
+  * **Hardware: Intel Core Processor with NVIDIA GTX 1080 Ti **
   
 ### Downloading data
   Simply use the download_dataset.py script to download Here is how to use the script:
@@ -75,19 +76,38 @@ answer prediction:
 "long-recall-at-precision>=0.9" | 0                        
 "long-precision-at-precision>=0.9" | 0                     
 
-
-
 ## Replicate these results
+
+ Use the setting currently implemented there in the code and the results should be replicable.
+ Also, I could only go up till the second checkpoint and so just used that one for prediction.
+ Otherwise, it would have taken more than a week to train on GTX 1080 Ti.
 
 ## The Neural Network Architecture 
 
+BERT BASE UNCASED CLS Layer used for classification.
+Question, Candidate pair classification.
+
 ### Why this architecture
+
+Simple and naturally it's a Binary classification problem.
 
 ## Improvements possible (full time for a month)
 
+Yes, can try more recent deep learning models for training instead of BERT.
+Also, knowlede-aware models like RAG could be used.
+
 ## Improvements in terms of hardware
+
+I think multi-GPU training is necessary for this kind of task.
 
 ## Opinion on the task and any suggestions you may have for improving it
 
+There is definitely one more layer on top of this task that has to happen 
+before this task. And that is the retrieval of the relevant Wikipedia article.
+This task assumes we already know the article we want to find passage in.
+
+Also, it shouldn't be just about Wikipedia, rather multi-domain (News, Blogs, Code even).
+
 ## Favorite charity and a link to the donation page
 
+[UNICEF][https://www.unicefusa.org/mission/emergencies/child-refugees-and-migrants?form=FUNSUJMLZDZ&utm_content=taxdeduct1responsive_E2001&ms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&initialms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&gclid=Cj0KCQiAzsz-BRCCARIsANotFgN5fgFXSgUWaUHVRpfO37gI2DULk_Aqco9x2JrK4LNYUNhCz_cGebMaApc3EALw_wcB]
