@@ -6,7 +6,19 @@ Use it as follows:
 python download_dataset.py <data_dir>
 
 where <data_dir> is the dir you want to store the dataset.
-Make sure you ahve enough space. Data can be many GBs.
+Make sure you have enough space. Data can be many GBs.
+
+The data dir will look like this:
+
+data_dir
+	├── dev
+	│   ├── nq-dev-00.jsonl
+		...
+	│   └── nq-dev-04.jsonl
+	└── train
+	    ├── nq-train-00.jsonl
+		...
+	    ├── nq-train-49.jsonl
 
 '''
 
@@ -27,6 +39,7 @@ print(dev_urls)
 # Downloading train file from the urls
 for t_url in train_urls:
 	try:
+		os.system("mkdir " + os.path.join(data_dir,"train"))
 		os.system("wget " + t_url + " -P " + os.path.join(data_dir,"train"))
 	except OSError as e:
 		raise OSError("See if wget is installed")
@@ -34,6 +47,7 @@ for t_url in train_urls:
 # Downloading dev files from the urls
 for d_url in dev_urls
 	try:
+		os.system("mkdir " + os.path.join(data_dir, "dev"))
 		os.system("wget " + d_url + " -P " + os.path.join(data_dir, "dev"))
 	except OSError as e:
 		raise OSError("See if wget is installed")
@@ -49,3 +63,5 @@ try:
 	os.system("cd " + os.path.join(data_dir,"dev") + " ; " + "for f in nq-dev-*l.gz; do echo $f; gzip -d $f; done;")
 except OSError as e:
 	raise OSError("See if gunzip is installed")
+
+

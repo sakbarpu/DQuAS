@@ -1,3 +1,14 @@
+'''
+This script performs an exploratory study of the dataset.
+
+Here is how to use it:
+
+python explore_dataset.py <data_dir>
+
+where data_dir is the dir where data is stored.
+
+'''
+
 import sys, os
 import json
 
@@ -26,17 +37,20 @@ print("Dev data size: ")
 os.system("du -hs " + dev_dir)
 print("")
 
-#print("A sample train file has this many number of lines:")
-#os.system("wc -l " + os.path.join(train_dir,train_data_files[0]))
-#print("A sample dev file has this many number of lines:")
-#os.system("wc -l " + os.path.join(dev_dir,dev_data_files[0]))
-#print("")
+print("A sample train file has this many number of lines:")
+os.system("wc -l " + os.path.join(train_dir,train_data_files[0]))
+print("A sample dev file has this many number of lines:")
+os.system("wc -l " + os.path.join(dev_dir,dev_data_files[0]))
+print("")
 
 print("Let's open a training JSON file and see what is in there.")
 with open(os.path.join(train_dir, train_data_files[0])) as f:
 	content = json.loads(f.readline())
 	print(content.keys())
-	#dict_keys(['annotations', 'document_html', 'document_title', 'document_tokens', 'document_url', 'example_id', 'long_answer_candidates', 'question_text', 'question_tokens'])
+	# returns dict_keys(['annotations', 'document_html', 'document_title', 
+	#		     'document_tokens', 'document_url', 'example_id', 
+	#		     'long_answer_candidates', 'question_text', 
+	#		     'question_tokens'])
 	print("")
 
 	print("Question Text:")
@@ -74,6 +88,3 @@ with open(os.path.join(train_dir, train_data_files[0])) as f:
 	print("Annotations:")
 	print(content['annotations'])
 	print("")
-
-
-
