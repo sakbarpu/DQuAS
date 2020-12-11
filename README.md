@@ -1,6 +1,6 @@
 # DQuAS (Deep Question Answering System)
 
-This is `dee-quas`, a deep learning model trained on Google Natural 
+This is `dee-quas`, a deep learning system trained on Google Natural 
 Questions Dataset. The repository contains code to fine-tune BERT on
 the training dataset and for prediction on the dev dataset.
 
