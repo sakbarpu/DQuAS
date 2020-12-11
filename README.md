@@ -80,25 +80,33 @@ answer prediction:
 
  Use the setting currently implemented there in the code and the results should be replicable.
  Also, I could only go up till the second checkpoint and so just used that one for prediction.
- Otherwise, it would have taken more than a week to train on GTX 1080 Ti.
+ Otherwise, it would have taken more than a week to train on GTX 1080 Ti. Follow the first 
+ section for instructions on how to run the program.
 
 ## The Neural Network Architecture 
 
-BERT BASE UNCASED CLS Layer used for classification.
-Question, Candidate pair classification.
+We have used the Huggingface library to load the pretrained BERT model for fine-tuning on our
+task. In the code, there is capability of playing with multiple different pretrained model.
+In current state the model used is the `bert-based-uncased`model.
 
-### Why this architecture
+For fine-tuning on our binary classification task, we provide (question, candidate) pairs as 
+input sequence and use the `[CLS]` Layer used for classification. The embedding for this layer
+is sent as input to a Linear layer with just one sigmoid output. The sigmoid output tells us
+whether the prediction is positive (1) or negative (0). For the training examples, the model
+is trained using (question, candidate) pairs.
 
-Simple and naturally it's a Binary classification problem.
+This architecture is simple and naturally works for this binary classification problem.
 
 ## Improvements possible (full time for a month)
 
-Yes, can try more recent deep learning models for training instead of BERT.
-Also, knowlede-aware models like RAG could be used.
+Yes, we can try more recent deep learning models for training instead of BERT. We can also try
+fine-tuning BERT for longer periods of time. I have only trained it for a portion of dataset.
+
+Also, knowledeg-aware models like RAG could be used to improve performance further. 
 
 ## Improvements in terms of hardware
 
-I think multi-GPU training is necessary for this kind of task.
+I think multi-GPU training is necessary for this kind of task for fast processing.
 
 ## Opinion on the task and any suggestions you may have for improving it
 
@@ -108,6 +116,6 @@ This task assumes we already know the article we want to find passage in.
 
 Also, it shouldn't be just about Wikipedia, rather multi-domain (News, Blogs, Code even).
 
-## Favorite charity and a link to the donation page
+## Please donate to:
 
 [UNICEF](https://www.unicefusa.org/mission/emergencies/child-refugees-and-migrants?form=FUNSUJMLZDZ&utm_content=taxdeduct1responsive_E2001&ms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&initialms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&gclid=Cj0KCQiAzsz-BRCCARIsANotFgN5fgFXSgUWaUHVRpfO37gI2DULk_Aqco9x2JrK4LNYUNhCz_cGebMaApc3EALw_wcB)
