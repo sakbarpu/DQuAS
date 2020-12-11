@@ -1,18 +1,18 @@
 # DQuAS (Deep Question Answering System)
 
 This is `dee-quas`, a deep learning system trained on Google Natural 
-Questions Dataset. The repository contains code to fine-tune BERT on
-the training dataset and for prediction on the dev dataset.
+Questions Dataset. The repository contains code to fine-tune [BERT](https://arxiv.org/abs/1810.04805)
+on the training dataset and for prediction on the dev dataset.
 
 ## Instructions for installing and running code 
 ### Prerequisites
-  * Need to have a Ubuntu instance with CUDA installed.
+  * Ubuntu 16.04 instance with CUDA installed
   * Python 3.7
   * Pandas 0.24.0
-  * Sklearn
+  * Sklearn 0.20.1
   * **Torch 1.7.0**
   * **Huggingface Transformers 2.4.0**
-  * wget and gzip for downloading and unzipping train and dev files
+  * wget and gzip Linux tools for downloading and unzipping data files
   * **Hardware: Intel Core Processor with NVIDIA GTX 1080 Ti**
   
 ### Downloading data
@@ -61,7 +61,7 @@ the training dataset and for prediction on the dev dataset.
  of the model that you want to use for prediction, and `<output_file>` is the output json file
  path where you want to store the prediction results.
  
- ### Metric Calculation using nq_eval.py
+ ### Metric calculation using nq_eval.py
  
  We use the [nq_eval.py](https://github.com/google-research-datasets/natural-questions/blob/master/nq_eval.py)
  script provided by the authors of the dataset to evaluate the performance of our model on
@@ -107,7 +107,10 @@ answer prediction:
 
 We have used the Huggingface library to load the pretrained BERT model for fine-tuning on our
 task. In the code, there is capability of playing with multiple different pretrained model.
-In current state the model used is the `bert-based-uncased` model.
+In current state the model used is the [`bert-based-uncased`](https://huggingface.co/bert-base-uncased)
+model.
+
+The model has 110M parameters and is 
 
 For fine-tuning on our binary classification task, we provide (question, candidate) pairs as 
 input sequence and use the `[CLS]` Layer used for classification. The embedding for this layer
