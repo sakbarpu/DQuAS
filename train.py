@@ -183,7 +183,7 @@ def evaluate_loss(net, device, criterion, dataloader):
 	print("\nF1-SCORE: ", f1_score(all_preds>0.5, all_labels))
 	return mean_loss / count
 
-def train_bert(net, criterion, opti, lr, train_loader, val_loader, epochs, iters_to_accumulate, model_dir):
+def train_bert(net, criterion, opti, lr, train_loader, val_loader, epochs, iters_to_accumulate, model_dir, cal_val_loss=False):
 	'''
 	Get the model and the hyperparameters along with data loaders etc. to train
 	Then save the model at checkpoints in the model_dir 
@@ -230,9 +230,10 @@ def train_bert(net, criterion, opti, lr, train_loader, val_loader, epochs, iters
 				model_counter += 1
 
 				# Compute Dev Loss 
-				val_loss = evaluate_loss(net, device, criterion, val_loader)
-				print()
-				print("In Epoch {}! Validation Loss : {}".format(ep+1, val_loss))
+				if cal_val_loss:
+					val_loss = evaluate_loss(net, device, criterion, val_loader)
+					print()
+					print("In Epoch {}! Validation Loss : {}".format(ep+1, val_loss))
 
 				# Bring back loss to 0
 				running_loss = 0.0
@@ -255,7 +256,7 @@ if __name__ == "__main__":
 
 	delimiter = " <;;;> "
 	df_val = pd.read_csv(dev_path, delimiter=delimiter)
-	chunksize = 6708167
+	chunksize = 6708167 # we can't even load the entire data into memory, so we train on chunks
 	for df_train in pd.read_csv(train_path, delimiter=delimiter, chunksize=chunksize):
 		# Defining model and parameters
 		# BERT (This is the model that is trained so far)
@@ -300,9 +301,6 @@ if __name__ == "__main__":
 		# Some training criteria
 		criterion = nn.BCEWithLogitsLoss()
 		opti = AdamW(net.parameters(), lr=lr, weight_decay=1e-2)
-		num_warmup_steps = 0 # The number of steps for the warmup phase.
-		num_training_steps = epochs * len(train_loader)  # The total number of training steps
-		t_total = (len(train_loader) // iters_to_accumulate) * epochs  # Necessary to take into account Gradient accumulation
 		
 		# Train the model
 		train_bert(net, criterion, opti, lr, train_loader, val_loader, epochs, iters_to_accumulate, model_dir)

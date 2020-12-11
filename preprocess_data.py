@@ -266,7 +266,7 @@ def extract_qa(line_dict, training=True):
 	'''
 
 	if training:
-		return extract_training_qa(line_dict)
+		return extract_train_qa(line_dict)
 	else:
 		return extract_dev_qa(line_dict)
 
