@@ -159,8 +159,8 @@ have their lengths closest to the actual positive long answer.
 
 ## Critical analysis of the Google NQ task
 
-There is definitely one more layer on top of this task that has to happen 
-before this task. And that is the retrieval of the relevant Wikipedia article.
+In a practical scenario, there is definitely one more task that has to happen 
+before this Google NQ task. And that is the retrieval of the relevant Wikipedia article.
 This Google NQ task assumes we already know the article we want to find the passage in
 which is not very realistic since there could be hundreds of articles that would have relevance
 to the question.
