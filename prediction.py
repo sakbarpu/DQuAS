@@ -97,8 +97,8 @@ def test_prediction(net, device, dataloader, with_labels=True, result_file="resu
 							'start_byte': int(start), 'end_byte': int(end),
 							'start_token': -1, 'end_token': -1
 						},
-						#"long_answer_score": prob.item(),
-						"long_answer_score": prob,
+						"long_answer_score": prob.item(),
+						#"long_answer_score": prob,
 						
 						"short_answer": [
 						],
@@ -223,7 +223,7 @@ delimiter = " <;;;> "
 maxlen = 512
 df_test = pd.read_csv(dev_path_new, delimiter=delimiter)
 test_set = CustomDataset(df_test, maxlen, bert_model)
-test_loader = DataLoader(test_set, batch_size=32, num_workers=1)
+test_loader = DataLoader(test_set, batch_size=256, num_workers=1)
 
 model = SentencePairClassifier(bert_model)
 print()
@@ -231,22 +231,9 @@ print()
 print("Loading the weights of the model...")
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model.load_state_dict(torch.load(path_to_model, map_location=device))
-#model.to(device)
+model.to(device)
 
 print("Predicting on test data...")
 test_prediction(net=model, device=device, dataloader=test_loader, with_labels=True,  # set the with_labels parameter to False if your want to get predictions on a dataset without labels
 				result_file=path_to_output_file)
-#print()
-#print("Predictions are available in : {}".format(path_to_output_file))
-#
-#path_to_output_file = 'results/output.txt'  # path to the file with prediction probabilities
-#labels_test = df_test['label']  # true labels
-#
-#probs_test = pd.read_csv(path_to_output_file, header=None)[0]	# prediction probabilities
-#threshold = 0.5   # you can adjust this threshold for your own dataset
-#preds_test=(probs_test>=threshold).astype('uint8') # predicted labels using the above fixed threshold
-#
-#metric = load_metric("glue", "mrpc")
-## Compute the accuracy and F1 scores
-#metric._compute(predictions=preds_test, references=labels_test)
 
