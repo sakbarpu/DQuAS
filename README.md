@@ -95,7 +95,7 @@ When evaluation script nq_eval.py is run against the predictions produced by the
 prediction.py and original gold dev files, it produces the following metric values for long
 answer prediction:
 
-<div align="center">
+<center>
 | Metric | Value|
 ---------|----------------------------------------------------
 "long-best-threshold-f1" | 0.9119335048486048               
@@ -108,7 +108,7 @@ answer prediction:
 "long-precision-at-precision>=0.75" | 0.8381229538013824   
 "long-recall-at-precision>=0.9" | 0                        
 "long-precision-at-precision>=0.9" | 0                     
-</div>
+</center>
 
 ## Replicate these results
 
