@@ -110,4 +110,4 @@ Also, it shouldn't be just about Wikipedia, rather multi-domain (News, Blogs, Co
 
 ## Favorite charity and a link to the donation page
 
-[UNICEF](ttps://www.unicefusa.org/mission/emergencies/child-refugees-and-migrants?form=FUNSUJMLZDZ&utm_content=taxdeduct1responsive_E2001&ms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&initialms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&gclid=Cj0KCQiAzsz-BRCCARIsANotFgN5fgFXSgUWaUHVRpfO37gI2DULk_Aqco9x2JrK4LNYUNhCz_cGebMaApc3EALw_wcB)
+[UNICEF](https://www.unicefusa.org/mission/emergencies/child-refugees-and-migrants?form=FUNSUJMLZDZ&utm_content=taxdeduct1responsive_E2001&ms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&initialms=cpc_dig_2020_Brand_20200109_google_taxdeduct1responsive_delve_E2001&gclid=Cj0KCQiAzsz-BRCCARIsANotFgN5fgFXSgUWaUHVRpfO37gI2DULk_Aqco9x2JrK4LNYUNhCz_cGebMaApc3EALw_wcB)
