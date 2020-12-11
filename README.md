@@ -58,6 +58,34 @@
  
 ## F1 score / Precision / Recall when running the evaluation script nq\_eval.py for the task
 
+When evaluation script nq_eval.py is run against the predictions produced by the model in
+prediction.py and original gold dev files, it produces the following metric values for long
+answer prediction:
+
+```
+
+"long-best-threshold-f1": 0.9071358748778103,
+
+"long-best-threshold-precision": 0.8300536672629696,
+
+"long-best-threshold-recall": 1.0,
+
+"long-best-threshold": 0.9999969005584717,
+
+"long-recall-at-precision>=0.5": 1.0,
+
+"long-precision-at-precision>=0.5": 0.8300536672629696,
+
+"long-recall-at-precision>=0.75": 1.0,
+
+"long-precision-at-precision>=0.75": 0.8300536672629696,
+
+"long-recall-at-precision>=0.9": 0,
+
+"long-precision-at-precision>=0.9": 0,
+```
+
+
 ## Replicate these results
 
 ## The Neural Network Architecture 
