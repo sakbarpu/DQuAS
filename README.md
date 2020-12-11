@@ -97,14 +97,14 @@ answer prediction:
 
 | Metric | Value|
 ---------|----------------------------------------------------
-"long-best-threshold-f1" | 0.9071358748778103               
-"long-best-threshold-precision" | 0.8300536672629696        
+"long-best-threshold-f1" | 0.9119335048486048               
+"long-best-threshold-precision" | 0.8381229538013824        
 "long-best-threshold-recall" | 1.0                         
 "long-best-threshold" | 0.9999969005584717                 
 "long-recall-at-precision>=0.5" | 1.0                      
-"long-precision-at-precision>=0.5" | 0.8300536672629696    
+"long-precision-at-precision>=0.5" | 0.8381229538013824    
 "long-recall-at-precision>=0.75" | 1.0                     
-"long-precision-at-precision>=0.75" | 0.8300536672629696   
+"long-precision-at-precision>=0.75" | 0.8381229538013824   
 "long-recall-at-precision>=0.9" | 0                        
 "long-precision-at-precision>=0.9" | 0                     
 
