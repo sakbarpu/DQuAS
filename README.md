@@ -1,7 +1,8 @@
 # DQuAS (Deep Question Answering System)
 
-This is `dee-quas`, a deep learning system trained on Google Natural 
-Questions Dataset. The repository contains code to fine-tune [BERT](https://arxiv.org/abs/1810.04805)
+This is `dee-quas`, a deep learning system trained on [Google Natural 
+Questions Dataset](https://ai.google.com/research/NaturalQuestions). 
+The repository contains code to fine-tune [BERT](https://arxiv.org/abs/1810.04805)
 on the training dataset and for prediction on the dev dataset.
 
 ## Instructions for installing and running code 
