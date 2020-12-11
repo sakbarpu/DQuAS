@@ -3,7 +3,7 @@
 This script downloads and unzips the dataset.
 Use it as follows:
 
-python download_dataset.py <data_dir>
+	python download_dataset.py <data_dir>
 
 where <data_dir> is the dir you want to store the dataset.
 Make sure you have enough space. Data can be many GBs.

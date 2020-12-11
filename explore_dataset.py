@@ -3,7 +3,7 @@ This script performs an exploratory study of the dataset.
 
 Here is how to use it:
 
-python explore_dataset.py <data_dir>
+	python explore_dataset.py <data_dir>
 
 where data_dir is the dir where data is stored.
 

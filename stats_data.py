@@ -1,3 +1,17 @@
+'''
+The main use for this script is just to explore the dataset
+to see how big the length of questions and candidates are.
+
+I have reported the results in stat.txt file.
+
+Here is how to use this script:
+
+	python stats_data.py <path_data>
+
+Where path_data is the path where processed data is stored.
+That is, where the output of preprocess_data.py is stored.
+'''
+
 import sys, os
 import pandas as pd
 import numpy as np
@@ -8,7 +22,6 @@ from tqdm import tqdm
 import logging
 logging.disable(logging.INFO)
 logging.disable(logging.WARNING)
-
 
 train_path = sys.argv[1]
 delimiter = " <;;;> "

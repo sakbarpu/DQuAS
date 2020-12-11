@@ -1,4 +1,13 @@
-print(min(lens_ques), max(lens_ques), np.mean(lens_ques), np.std(lens_ques))
-20 101 48.020221130269405 10.55819701880059
-print(min(lens_cands), max(lens_cands), np.mean(lens_cands), np.std(lens_cands))
-4 125490 160.08603213228955 735.3862709020037
+This file is just an exploration of how big the question and candidate texts are:
+
+Questions:
+	Minimum length: 20
+	Maximum length: 101
+	Mean length: 48
+	Length STD: 10
+
+Candidates:
+	Minimum length: 4
+	Maximum length: 125490
+	Mean length: 160
+	Length STD: 735

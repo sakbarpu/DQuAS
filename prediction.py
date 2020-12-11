@@ -179,7 +179,7 @@ for f in dev_data_files: print(f)
 print("")
 
 print("\n\nNow preprocessing the dev datasets...")
-dev_path_new = os.path.join(sys.argv[1],"whole_data", 'dev/dev_processed_new_0.csv')
+dev_path_new = os.path.join(sys.argv[1],"whole_data", 'dev/dev_processed_new.csv')
 if not True:
 	qa_dataset = []
 	num_dev_files = 0
@@ -213,7 +213,6 @@ if not True:
 	del qa_dataset
 	csvfile.close()
 
-#/home/ubuntu/mnt/cloudNAS2/SoftKBase/Google_NQ/models/bert-base-uncased_lr_1e-06_val_loss_10.62006_ep_0_1.pt
 path_to_model = sys.argv[1] + 'models/bert-base-uncased_lr_1e-06_val_loss_10.62006_ep_0_1.pt'	
 path_to_output_file = sys.argv[1] + 'results/output.json'
 
