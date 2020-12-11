@@ -24,16 +24,33 @@
     python preprocess_data.py <data_dir>
     
   where `<data_dir>` is the place where you want to hold the data. The result will be 
-  creation of two csv files trained_processed.csv and dev_processed.csv.
+  creation of two csv files train_processed.csv and dev_processed.csv.
   
-  ```
+  `
   data_dir
         |_ train
                 |_ train_processed.csv
         |_ dev
                 |_ dev_processed.csv
-  ```
-
+  `
+### Train the model
+ Again with a single command you can train the model.
+ 
+   `python train.py <data_dir> <model_dir>`
+   
+ where `<data_dir>` is the path to the root of the data. And `model_dir` refers to the
+ place you want to store the model checkpoints.
+ 
+### Prediction
+ This is where we run the trained model to perform predictions on the dev set and produce
+ the predictions file as required by the nq_eval.py file.
+ 
+   `python prediction.py <data_dir> <model_path> <output_file>`
+   
+ where `<data_dir>` is the root dir of the data, `<model_path>` is the path to the checkpoint
+ of the model that you want to use for prediction, and `<output_file>` is the output json file
+ path where you want to store the prediction results.
+ 
 ## F1 score / Precision / Recall when running the evaluation script nq\_eval.py for the task
 
 ## Replicate these results
