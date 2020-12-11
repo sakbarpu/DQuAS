@@ -107,7 +107,7 @@ answer prediction:
 
 We have used the Huggingface library to load the pretrained BERT model for fine-tuning on our
 task. In the code, there is capability of playing with multiple different pretrained model.
-In current state the model used is the `bert-based-uncased`model.
+In current state the model used is the `bert-based-uncased` model.
 
 For fine-tuning on our binary classification task, we provide (question, candidate) pairs as 
 input sequence and use the `[CLS]` Layer used for classification. The embedding for this layer
@@ -118,9 +118,10 @@ is trained using (question, candidate) pairs.
 ### Why it works?
 
 This architecture is simple and naturally works for this binary classification problem. The problem
-is naturally a binary classification problem relevance/matching score between two pieces of texts
-question and candidate needs to be determined. BERT binary classification works best for this type
-of problem.
+is naturally a binary classification problem of finding relevance/matching score between two pieces 
+of texts question and candidate needs to be determined. BERT binary pair of sentence classification 
+works best for this type of problem. Since, BERT is pretrained on next-sentence prediction task, it
+makes it suitable for this kind of problem. 
 
 ### Sampling Heuristic
 
@@ -138,18 +139,25 @@ or 3 examples that have the candidate largest in length. This type of sampling i
 ensure that we sample different lengths of candidate and also to ensure that most of the samples
 have their lengths closest to the actual positive long answer.
 
-## Improvements possible (full time for a month)
+## Improvements possible
 
-Yes, we can try more recent deep learning models for training instead of BERT. We can also try
-fine-tuning BERT for longer periods of time. We have only trained it for a portion of dataset.
+  * We can try more recent deep learning models for training instead of BERT. 
+  
+  * We can also try fine-tuning BERT for longer periods of time. We have only trained it for a portion of dataset. 
 
-Also, knowledge-aware models like RAG could be used to improve performance further. 
+  * We can use bigger BERT model.
+  
+  * Knowledge-aware models like RAG could be used to improve performance further. These models use knowledge-base
+    as guiding force for making decisions about relevance of a text piece to a query.
 
-## Improvements in terms of hardware
+  * Multi-GPU training is necessary for this kind of task for fast processing.
+  
+  * We can explore the dataset for types of questions asked by the user to determine the user intent.
+    Based on that, we can first identify what kind of question the user is asking and then build a separate
+    model for each type of intent. Also, if the intent is not decidable, we can use straightforward modeling
+    approach.
 
-I think multi-GPU training is necessary for this kind of task for fast processing.
-
-## Opinion on the task and any suggestions you may have for improving it
+## Critical analysis of the Google NQ task
 
 There is definitely one more layer on top of this task that has to happen 
 before this task. And that is the retrieval of the relevant Wikipedia article.
