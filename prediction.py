@@ -143,24 +143,24 @@ def extract_qa(line_dict):
 
 	# Get the actual long answers (there are 5 of them in annotations)
 	long_answers = []
-	la_start_bytes_set = set()
-	la_end_bytes_set = set()
-	for la in line_dict['annotations']:
-		# Get the start and end bytes for this long asnwer
-		long_answer = la['long_answer']
-		la_start_byte = long_answer['start_byte']
-		la_end_byte = long_answer['end_byte']
-		if la_start_byte < 0 and la_end_byte < 0: continue
-		# Store the start and end bytes in a set for later usage
-		la_start_bytes_set.add(la_start_byte)
-		la_end_bytes_set.add(la_end_byte)
-		# Loop over the doc tokens and update long answer content
-		long_answer_content = ""
-		for l in line_dict['document_tokens']:
-			# Am i in the span of long answer and if this token not html token
-			if l['start_byte'] >= la_start_byte and l['end_byte'] <= la_end_byte and l['html_token'] is False:
-				 long_answer_content += l['token'] + " "
-		long_answers.append([long_answer_content, la_start_byte, la_end_byte])
+#	la_start_bytes_set = set()
+#	la_end_bytes_set = set()
+#	for la in line_dict['annotations']:
+#		# Get the start and end bytes for this long asnwer
+#		long_answer = la['long_answer']
+#		la_start_byte = long_answer['start_byte']
+#		la_end_byte = long_answer['end_byte']
+#		#if la_start_byte < 0 and la_end_byte < 0: continue
+#		# Store the start and end bytes in a set for later usage
+#		la_start_bytes_set.add(la_start_byte)
+#		la_end_bytes_set.add(la_end_byte)
+#		# Loop over the doc tokens and update long answer content
+#		long_answer_content = ""
+#		for l in line_dict['document_tokens']:
+#			# Am i in the span of long answer and if this token not html token
+#			if l['start_byte'] >= la_start_byte and l['end_byte'] <= la_end_byte and l['html_token'] is False:
+#				 long_answer_content += l['token'] + " "
+#		long_answers.append([long_answer_content, la_start_byte, la_end_byte])
 
 	# Now get the long answer candidates
 	lac_starts = collections.defaultdict(list)
@@ -169,8 +169,8 @@ def extract_qa(line_dict):
 	lac_contents = []
 	for lac in line_dict['long_answer_candidates']:
 		# Skip the actual long answers as we already covered them above
-		if lac['start_byte'] in la_start_bytes_set and lac['end_byte'] in la_end_bytes_set:
-			continue
+#		if lac['start_byte'] in la_start_bytes_set and lac['end_byte'] in la_end_bytes_set:
+#			continue
 		# Gather start and end bytes in dicts
 		start_byte = lac['start_byte']
 		end_byte = lac['end_byte']
@@ -233,11 +233,11 @@ if __name__ == "__main__":
 			# Save preprocessed data to file
 			num_devs = 0
 			for qa in qa_dataset:
-				for la in qa[2]:
-					csvfile.write(str(qa[0]) + " <;;;> " + qa[1] + " <;;;> " + " 1 " + " <;;;> " + la[0] + " <;;;> " +  str(la[1]) + " <;;;> " + str(la[2]) + "\n")
-					num_devs += 1
+#				for la in qa[2]:
+#					csvfile.write(str(qa[0]) + " <;;;> " + qa[1] + " <;;;> " + " 1 " + " <;;;> " + la[0] + " <;;;> " +  str(la[1]) + " <;;;> " + str(la[2]) + "\n")
+#					num_devs += 1
 				for cand in qa[3]:
-					csvfile.write(str(qa[0]) + " <;;;> " + qa[1] + " <;;;> " + " 0 " + " <;;;> " + cand[0] + " <;;;> " +  str(cand[1]) + " <;;;> " + str(cand[2]) + "\n")
+					csvfile.write(str(qa[0]) + " <;;;> " + qa[1] + " <;;;> " + " X " + " <;;;> " + cand[0] + " <;;;> " +  str(cand[1]) + " <;;;> " + str(cand[2]) + "\n")
 					num_devs += 1
 			print("Number of dev examples so far: ", num_devs)
 				
@@ -264,6 +264,5 @@ if __name__ == "__main__":
 	model.to(device)
 
 	print("Predicting on test data...")
-	test_prediction(net=model, device=device, dataloader=test_loader, with_labels=True,  # set the with_labels parameter to False if your want to get predictions on a dataset without labels
-					result_file=path_to_output_file)
+	test_prediction(net=model, device=device, dataloader=test_loader, with_labels=True, result_file=path_to_output_file)
 
