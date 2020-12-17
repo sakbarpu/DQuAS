@@ -28,7 +28,8 @@ long answer and short answer to the query.
 
 In this DQuAS project, we are interested in only localizing
 the passage that constitute the long answer to the query.
-And we fine-tune BERT to perform binary classification task.
+And we fine-tune BERT to perform binary sentence pair 
+classification task.
 
 
 ## Instructions for installing and running code 
