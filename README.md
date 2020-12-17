@@ -98,16 +98,16 @@ answer prediction:
 
 | Metric | Value|
 ---------|----------------------------------------------------
-"long-best-threshold-f1" | 0.9119335048486048               
-"long-best-threshold-precision" | 0.8381229538013824        
-"long-best-threshold-recall" | 1.0                         
-"long-best-threshold" | 0.9999969005584717                 
-"long-recall-at-precision>=0.5" | 1.0                      
-"long-precision-at-precision>=0.5" | 0.8381229538013824    
-"long-recall-at-precision>=0.75" | 1.0                     
-"long-precision-at-precision>=0.75" | 0.8381229538013824   
-"long-recall-at-precision>=0.9" | 0                        
-"long-precision-at-precision>=0.9" | 0                     
+"long-best-threshold-f1" | 0.28950159066808057
+"long-best-threshold-precision" | 0.2441860465116279
+"long-best-threshold-recall" | 0.35546875                         
+"long-best-threshold" | 0.39462462067604065                 
+"long-recall-at-precision>=0.5" | 0.025824652777777776                   
+"long-precision-at-precision>=0.5" | 0.5085470085470085 
+"long-recall-at-precision>=0.75" | 0.0006510416666666666                 
+"long-precision-at-precision>=0.75" | 1.0   
+"long-recall-at-precision>=0.9" | 0.0006510416666666666                  
+"long-precision-at-precision>=0.9" | 1.0                   
 
 ## Replicate these results
 
