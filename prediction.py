@@ -104,9 +104,12 @@ def test_prediction(net, device, dataloader, with_labels=True, result_file="resu
 			for eid, start, end, prob in zip(eids, starts, ends, probs):
 				# If this is the first time I am seeing this example id (eid)
 				# Or I have seen it before but this time the probability for candidate is higher
+	#			print(eid, start, end, prob)
 				if eid not in probs_all or (eid in probs_all and prob > probs_all[eid][0]):
 					# Update the prediction for this eid 
 					probs_all[eid] = [prob, start, end]
+	#		print(probs_all)
+	#		exit()
 
 	# Gather the answer data to write to json file as output
 	data = {}
@@ -190,7 +193,8 @@ def extract_qa(line_dict):
 			for x in lac_ends[l['end_byte']]:
 				curr_spans.remove(x)
 		for span in curr_spans:
-			lac_contents[span][0] += l['token'] + " "
+			if l['html_token'] is False:
+				lac_contents[span][0] += l['token'] + " "
 
 	return [example_id, question_text, long_answers, lac_contents]
 

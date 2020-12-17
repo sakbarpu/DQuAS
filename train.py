@@ -38,6 +38,7 @@ from sklearn.metrics import f1_score
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
+pd.set_option("display.max_rows", None, "display.max_columns", None)
 class CustomDataset(Dataset):
 
 	def __init__(self, data, maxlen, with_labels=True, bert_model='albert-base-v2'):
@@ -73,6 +74,8 @@ class CustomDataset(Dataset):
 
 		if self.with_labels:  # True if the dataset has labels
 			label = self.data.loc[index, 'label']
+			label = label.split("<;;;>")[0]
+			label = float(label)
 			return token_ids, attn_masks, token_type_ids, label  
 		else:
 			return token_ids, attn_masks, token_type_ids
@@ -278,7 +281,7 @@ if __name__ == "__main__":
 		bs = 4  # batch size
 		iters_to_accumulate = 1  # the gradient accumulation adds gradients over an effective batch of size : bs * iters_to_accumulate. If set to "1", you get the usual batch size
 		lr = 1e-6  # learning rate
-		epochs = 5	# number of training epochs
+		epochs = 1	# number of training epochs
 
 		#  Set all seeds to make reproducible results
 		set_seed(1)

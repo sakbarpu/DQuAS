@@ -178,7 +178,8 @@ def extract_train_qa(line_dict):
 				curr_spans.remove(x)
 		# Obviously every candidate that is present in curr span should include this token in its content
 		for span in curr_spans:
-			lac_contents[span] += l['token'] + " "
+			if l['html_token'] is False:
+				lac_contents[span] += l['token'] + " "
 
 	return [question_text, long_answer_content, lac_contents]
 
@@ -250,7 +251,8 @@ def extract_dev_qa(line_dict):
 				curr_spans.remove(x)
 
 		for span in curr_spans:
-			lac_contents[span] += l['token'] + " "
+			if l['html_token'] is False:
+				lac_contents[span] += l['token'] + " "
 	
 	return [question_text, long_answers, lac_contents]
 
