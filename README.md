@@ -146,6 +146,16 @@ answer prediction:
  After second checkpoint (and almost 2 days of training) we killed the training process.
  Otherwise, it would have taken more than a week to train on GTX 1080 Ti.
  
+ We divide the data (53665339 training examples) into 8 chunks and train on each chunk (size = 
+ 6708167 examples) mainly because we can't load all examples simultaneously into my memory.
+ 
+Then, we take checkpoints of model at every 20% of the training of each chunk (i.e, around 
+1341633 examples). We trained for just two checkpoints (i.e. 40%) of the first chunk. That makes 
+the effective training for 1341633\*2 =  2683266 examples out of total 53665339 examples.
+ 
+In all, the training is done for just (2683266 out of 53665339 examples or) 5% of our processed
+binary classification data.
+ 
  The following are the training criteria (hyperparamters etc.) used:
  
     
