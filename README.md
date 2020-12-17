@@ -29,7 +29,10 @@ long answer and short answer to the query.
 In this DQuAS project, we are interested in only localizing
 the passage that constitute the long answer to the query.
 And we fine-tune BERT to perform binary sentence pair 
-classification task.
+classification task. In the sentence pair, one item is the
+question text, while the other is the long answer candidate.
+The labels will be 0 for candidates that are not actual
+long answer, while 1 for actual long answer passage.
 
 
 ## Instructions for installing and running code 
