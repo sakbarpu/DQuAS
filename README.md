@@ -5,6 +5,32 @@ Questions Dataset](https://ai.google.com/research/NaturalQuestions).
 The repository contains code to fine-tune [BERT](https://arxiv.org/abs/1810.04805)
 on the training dataset and for prediction on the dev dataset.
 
+## Google Natural Questions Dataset
+
+The Google NQ dataset is a question answering dataset that
+can be thought of as a triple (question, long answer, short
+answer).
+
+The questions are extracted from Google query logs and
+contain keywords queries that were posted on the Google 
+search engine. In response to the query, a list of websites
+are returned by the Google search engine. The top wikipedia
+articles that are retrieved in response to a given query are
+given to the human annotators whose job is to label passages
+in the article that form the long answers to the Google
+query. In addition to the long answer, the annotator is also
+responsible to label a short answer (most like a couple of
+words or a small phrase) in the Wikipedia article.
+
+The goal then is given a Google query and a Wikipedia
+article with many passages (may be 100 passages), find the 
+long answer and short answer to the query.
+
+In this DQuAS project, we are interested in only localizing
+the passage that constitute the long answer to the query.
+And we fine-tune BERT to perform binary classification task.
+
+
 ## Instructions for installing and running code 
 ### Prerequisites
   * Ubuntu 16.04 instance with CUDA installed
