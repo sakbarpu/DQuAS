@@ -170,7 +170,7 @@ Then, we take checkpoints of model at every 20% of the training of each chunk (i
 the effective training for 1341633\*2 =  2683266 examples out of total 53665339 examples.
  
 In all, the training is done for just (2683266 out of 53665339 examples or) 5% of our processed
-binary classification data.
+binary classification data. It took approximately 54 hours to train the system.
  
  The following are the training criteria (hyperparamters etc.) used:
  
