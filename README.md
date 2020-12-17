@@ -173,11 +173,13 @@ have their lengths closest to the actual positive long answer.
 
 ## Improvements possible
 
+  * We can try BERT-ensembles. They are performing well in SOTA.
+
   * We can try more recent deep learning models for training instead of BERT. 
   
-  * We can also try fine-tuning BERT for longer periods of time. We have only trained it for a portion of dataset. 
+  * We can also try fine-tuning BERT for longer periods of time. We have only trained it for a VERY SMALL portion of dataset. 
 
-  * We can use bigger BERT model.
+  * We can use bigger BERT model (bert-large).
   
   * Knowledge-aware models like RAG could be used to improve performance further. These models use knowledge-base
     as guiding force for making decisions about relevance of a text piece to a query.
