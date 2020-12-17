@@ -83,7 +83,20 @@ long answer, while 1 for actual long answer passage.
         |_ dev
                 |_ dev_processed.csv
   ```
-  
+
+The train_processed.csv file will contain the following columns: question, label, 
+and candidate. Here, question is the text sequence for question, candidate is the
+long answer text candidate, and label is 1 for train example where candidate is 
+the actual long answer, and 0 otherwise.
+
+The dev_processed.csv file will contain the following columns: question, label,
+candidate, start, and end. Here, question, label, and candidate has the same definition
+as above, whereas start and end are the start byte and end byte of the candidate
+in the Wikipedia article. The start byte is the byte index from where the candidate
+span starts in the Wikipedia article, and end byte is the byte index at which the 
+candidate span ends. These two bytes are needed for evaluation of the dev set through
+the Google provided nq_eval.py script (more details later).
+
 ### Train the model
  Again with a single command you can train the model.
  
