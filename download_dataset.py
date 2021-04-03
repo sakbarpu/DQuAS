@@ -37,7 +37,7 @@ print("\nFollowing are the urls for dev dataset")
 print(dev_urls)
 
 # Downloading train file from the urls
-for t_url in train_urls[:1]:
+for t_url in train_urls:
 	try:
 		os.system("mkdir " + os.path.join(data_dir,"train"))
 		os.system("wget " + t_url + " -P " + os.path.join(data_dir,"train"))
@@ -45,7 +45,7 @@ for t_url in train_urls[:1]:
 		raise OSError("See if wget is installed")
 
 # Downloading dev files from the urls
-for d_url in dev_urls[:1]:
+for d_url in dev_urls:
 	try:
 		os.system("mkdir " + os.path.join(data_dir, "dev"))
 		os.system("wget " + d_url + " -P " + os.path.join(data_dir, "dev"))
